@@ -26,15 +26,16 @@ app.get("/mario/:id", (req, res) => {
 
 app.post("/mario", (req, res) => {
   const { name, weight } = req.body;
-  if (name === "" || weight === "") {
-    res.status(400).send({ message: "either name or weight is missing" });
-    return;
-  }
   const mario = new marioModel({
     name: name,
     weight: weight
   });
-  mario.save().then((mario) => res.status(201).send(mario));
+  mario
+    .save()
+    .then((mario) => res.status(201).send(mario))
+    .catch((error) =>
+      res.status(400).send({ message: "either name or weight is missing" })
+    );
 });
 
 app.patch("/mario/:id", (req, res) => {
